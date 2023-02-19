@@ -9,6 +9,60 @@ TEXTW_POS = (10, 220)
 TEXTW_SIZE = (UI_SIZE[0] - TEXTW_POS[0] - 10, 200)
 LAYOUT_POS = (10, 10)
 LAYOUT_SIZE = (150, 10 + (23 + 10) * 5)
+DEFAULT_DUMMY_DECKS = (
+    (
+        "global config for FSRS4Anki",
+        (1.0, 1.0, 5.0, -0.5, -0.5, 0.2, 1.4, -0.12, 0.8, 2.0, -0.2, 0.2, 1.0),
+        0.9,
+        36500,
+        1.3,
+        1.2,
+    ),
+    (
+        "ALL::Learning::English::Reading",
+        (
+            1.1475,
+            1.401,
+            5.1483,
+            -1.4221,
+            -1.2282,
+            0.035,
+            1.4668,
+            -0.1286,
+            0.7539,
+            1.9671,
+            -0.2307,
+            0.32,
+            0.9451,
+        ),
+        0.9,
+        36500,
+        1.3,
+        1.2,
+    ),
+    (
+        "ALL::Archive",
+        (
+            1.2879,
+            0.5135,
+            4.9532,
+            -1.502,
+            -1.0922,
+            0.0081,
+            1.3771,
+            -0.0294,
+            0.6718,
+            1.8335,
+            -0.4066,
+            0.7291,
+            0.5517,
+        ),
+        0.9,
+        36500,
+        1.3,
+        1.2,
+    ),
+)
 
 
 class UiDialog:
@@ -31,7 +85,8 @@ class UiDialog:
         self.add_deck_to_table_button = QtWidgets.QPushButton(
             "Add deck to table", dialog
         )
-        self.add_deck_to_table_button.setEnabled(False)  # todo
+        self.add_deck_to_table_button.setEnabled(True)
+        self.add_deck_to_table_button.clicked.connect(self._add_deck_to_table)
         self.remove_deck_from_table_button = QtWidgets.QPushButton(
             "Remove deck from table", dialog
         )
@@ -76,62 +131,16 @@ class UiDialog:
         self.vertical_layout.addWidget(self.import_from_config_button)
         self.vertical_layout_widget.setLayout(self.vertical_layout)
 
+    def _add_deck_to_table(self):
+        row_count = self.table_widget.rowCount()
+        self.table_widget.insertRow(row_count)
+        for column, data in enumerate(DEFAULT_DUMMY_DECKS[0]):
+            self.table_widget.setItem(
+                row_count, column, QtWidgets.QTableWidgetItem(str(data))
+            )
+
     def _add_dummy_data(self):
-        dummy = (
-            (
-                "global config for FSRS4Anki",
-                (1.0, 1.0, 5.0, -0.5, -0.5, 0.2, 1.4, -0.12, 0.8, 2.0, -0.2, 0.2, 1.0),
-                0.9,
-                36500,
-                1.3,
-                1.2,
-            ),
-            (
-                "ALL::Learning::English::Reading",
-                (
-                    1.1475,
-                    1.401,
-                    5.1483,
-                    -1.4221,
-                    -1.2282,
-                    0.035,
-                    1.4668,
-                    -0.1286,
-                    0.7539,
-                    1.9671,
-                    -0.2307,
-                    0.32,
-                    0.9451,
-                ),
-                0.9,
-                36500,
-                1.3,
-                1.2,
-            ),
-            (
-                "ALL::Archive",
-                (
-                    1.2879,
-                    0.5135,
-                    4.9532,
-                    -1.502,
-                    -1.0922,
-                    0.0081,
-                    1.3771,
-                    -0.0294,
-                    0.6718,
-                    1.8335,
-                    -0.4066,
-                    0.7291,
-                    0.5517,
-                ),
-                0.9,
-                36500,
-                1.3,
-                1.2,
-            ),
-        )
-        for row, deck in enumerate(dummy):
+        for row, deck in enumerate(DEFAULT_DUMMY_DECKS):
             number_of_rows = self.table_widget.rowCount()
             self.table_widget.insertRow(number_of_rows)
             for column, data in enumerate(deck):
