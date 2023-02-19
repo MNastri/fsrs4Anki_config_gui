@@ -2,12 +2,20 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+UI_SIZE = (1200, 430)
+TABLE_POS = (170, 10)
+TABLE_SIZE = (UI_SIZE[0] - TABLE_POS[0] - 10, 200)
+TEXTW_POS = (10, 220)
+TEXTW_SIZE = (UI_SIZE[0] - TEXTW_POS[0] - 10, 200)
+LAYOUT_POS = (10, 10)
+LAYOUT_SIZE = (150, 10 + (23 + 10) * 5)
+
 
 class UiDialog:
     def setup_ui(self, dialog):
         dialog.setObjectName("dialog")
-        dialog.resize(900, 430)
-        dialog.setWindowTitle("code string generator")
+        dialog.resize(*UI_SIZE)
+        dialog.setWindowTitle("Code string generator")
         self._setup_buttons(dialog)
         self._setup_table(dialog)
         self._setup_text(dialog)
@@ -37,10 +45,13 @@ class UiDialog:
 
     def _setup_table(self, dialog):
         self.table_widget = QtWidgets.QTableWidget(dialog)
-        self.table_widget.setGeometry(QtCore.QRect(120, 10, 770, 200))
+        self.table_widget.setGeometry(QtCore.QRect(*TABLE_POS, *TABLE_SIZE))
         self.table_widget.setColumnCount(6)
         self.table_widget.setHorizontalHeaderLabels(
             ["name", "weights", "retention", "interval", "easy", "hard"]
+        )
+        self.table_widget.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.AdjustToContents
         )
 
     def _setup_text(self, dialog):
@@ -50,11 +61,11 @@ class UiDialog:
             "and click 'To table' to generate a table",
             dialog,
         )
-        self.text_widget.setGeometry(QtCore.QRect(10, 220, 880, 200))
+        self.text_widget.setGeometry(QtCore.QRect(*TEXTW_POS, *TEXTW_SIZE))
 
     def _setup_layout(self, dialog):
         self.vertical_layout_widget = QtWidgets.QWidget(dialog)
-        self.vertical_layout_widget.setGeometry(QtCore.QRect(10, 10, 100, 10 + 33 * 5))
+        self.vertical_layout_widget.setGeometry(QtCore.QRect(*LAYOUT_POS, *LAYOUT_SIZE))
         self.vertical_layout = QtWidgets.QVBoxLayout(self.vertical_layout_widget)
         self.vertical_layout.setContentsMargins(0, 0, 0, 0)
         self.vertical_layout.addWidget(self.convert_to_text_button)
