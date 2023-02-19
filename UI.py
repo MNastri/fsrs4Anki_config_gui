@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-UI_SIZE = (1200, 430)
+UI_SIZE = (1350, 430)
 TABLE_POS = (170, 10)
 TABLE_SIZE = (UI_SIZE[0] - TABLE_POS[0] - 10, 200)
 TEXTW_POS = (10, 220)
@@ -78,19 +78,66 @@ class UiDialog:
 
     def _add_dummy_data(self):
         dummy = (
-            "global config for FSRS4Anki",
-            (1.0, 1.0, 5.0, -0.5, -0.5, 0.2, 1.4, -0.12, 0.8, 2.0, -0.2, 0.2, 1.0),
-            0.9,
-            36500,
-            1.3,
-            1.2,
+            (
+                "global config for FSRS4Anki",
+                (1.0, 1.0, 5.0, -0.5, -0.5, 0.2, 1.4, -0.12, 0.8, 2.0, -0.2, 0.2, 1.0),
+                0.9,
+                36500,
+                1.3,
+                1.2,
+            ),
+            (
+                "ALL::Learning::English::Reading",
+                (
+                    1.1475,
+                    1.401,
+                    5.1483,
+                    -1.4221,
+                    -1.2282,
+                    0.035,
+                    1.4668,
+                    -0.1286,
+                    0.7539,
+                    1.9671,
+                    -0.2307,
+                    0.32,
+                    0.9451,
+                ),
+                0.9,
+                36500,
+                1.3,
+                1.2,
+            ),
+            (
+                "ALL::Archive",
+                (
+                    1.2879,
+                    0.5135,
+                    4.9532,
+                    -1.502,
+                    -1.0922,
+                    0.0081,
+                    1.3771,
+                    -0.0294,
+                    0.6718,
+                    1.8335,
+                    -0.4066,
+                    0.7291,
+                    0.5517,
+                ),
+                0.9,
+                36500,
+                1.3,
+                1.2,
+            ),
         )
-        number_of_rows = self.table_widget.rowCount()
-        self.table_widget.insertRow(number_of_rows)
-        for column, data in enumerate(dummy):
-            self.table_widget.setItem(
-                number_of_rows, column, QtWidgets.QTableWidgetItem(str(data))
-            )
+        for row, deck in enumerate(dummy):
+            number_of_rows = self.table_widget.rowCount()
+            self.table_widget.insertRow(number_of_rows)
+            for column, data in enumerate(deck):
+                self.table_widget.setItem(
+                    row, column, QtWidgets.QTableWidgetItem(str(data))
+                )
 
         self.table_widget.resizeColumnsToContents()
 
