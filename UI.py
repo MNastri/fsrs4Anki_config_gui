@@ -77,11 +77,22 @@ class UiDialog:
         self.vertical_layout_widget.setLayout(self.vertical_layout)
 
     def _add_dummy_data(self):
+        dummy = (
+            "global config for FSRS4Anki",
+            (1.0, 1.0, 5.0, -0.5, -0.5, 0.2, 1.4, -0.12, 0.8, 2.0, -0.2, 0.2, 1.0),
+            0.9,
+            36500,
+            1.3,
+            1.2,
+        )
         number_of_rows = self.table_widget.rowCount()
         self.table_widget.insertRow(number_of_rows)
-        self.table_widget.setItem(
-            number_of_rows, 0, QtWidgets.QTableWidgetItem("teste_teste")
-        )
+        for column, data in enumerate(dummy):
+            self.table_widget.setItem(
+                number_of_rows, column, QtWidgets.QTableWidgetItem(str(data))
+            )
+
+        self.table_widget.resizeColumnsToContents()
 
 
 if __name__ == "__main__":
