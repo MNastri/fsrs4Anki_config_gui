@@ -8,7 +8,14 @@ class UiDialog:
         dialog.setObjectName("dialog")
         dialog.resize(900, 430)
         dialog.setWindowTitle("code string generator")
+        self._setup_buttons(dialog)
+        self._setup_table(dialog)
+        self._setup_text(dialog)
+        self._setup_layout(dialog)
+        QtCore.QMetaObject.connectSlotsByName(dialog)
+        self._add_dummy_data()
 
+    def _setup_buttons(self, dialog):
         self.convert_to_text_button = QtWidgets.QPushButton("Convert to text", dialog)
         self.convert_to_text_button.setEnabled(False)  # todo
         self.convert_to_table_button = QtWidgets.QPushButton("Convert to table", dialog)
@@ -28,6 +35,7 @@ class UiDialog:
         self.export_to_config_button = QtWidgets.QPushButton("Export to config", dialog)
         self.export_to_config_button.setEnabled(False)  # todo
 
+    def _setup_table(self, dialog):
         self.table_widget = QtWidgets.QTableWidget(dialog)
         self.table_widget.setGeometry(QtCore.QRect(120, 10, 770, 200))
         self.table_widget.setColumnCount(6)
@@ -35,6 +43,7 @@ class UiDialog:
             ["name", "weights", "retention", "interval", "easy", "hard"]
         )
 
+    def _setup_text(self, dialog):
         self.text_widget = QtWidgets.QTextEdit(
             "Click 'To text' to generate the custom scheduler code from the "
             "table above OR paste the code from your custom scheduler here "
@@ -42,7 +51,8 @@ class UiDialog:
             dialog,
         )
         self.text_widget.setGeometry(QtCore.QRect(10, 220, 880, 200))
-        # Set up the layout
+
+    def _setup_layout(self, dialog):
         self.vertical_layout_widget = QtWidgets.QWidget(dialog)
         self.vertical_layout_widget.setGeometry(QtCore.QRect(10, 10, 100, 10 + 33 * 5))
         self.vertical_layout = QtWidgets.QVBoxLayout(self.vertical_layout_widget)
@@ -55,7 +65,12 @@ class UiDialog:
         self.vertical_layout.addWidget(self.import_from_config_button)
         self.vertical_layout_widget.setLayout(self.vertical_layout)
 
-        QtCore.QMetaObject.connectSlotsByName(dialog)
+    def _add_dummy_data(self):
+        number_of_rows = self.table_widget.rowCount()
+        self.table_widget.insertRow(number_of_rows)
+        self.table_widget.setItem(
+            number_of_rows, 0, QtWidgets.QTableWidgetItem("teste_teste")
+        )
 
 
 if __name__ == "__main__":
