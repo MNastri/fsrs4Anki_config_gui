@@ -90,7 +90,8 @@ class UiDialog:
         self.remove_deck_from_table_button = QtWidgets.QPushButton(
             "Remove deck from table", dialog
         )
-        self.remove_deck_from_table_button.setEnabled(False)  # todo
+        self.remove_deck_from_table_button.setEnabled(True)
+        self.remove_deck_from_table_button.clicked.connect(self._remove_deck_from_table)
         self.import_from_config_button = QtWidgets.QPushButton(
             "Import from config", dialog
         )
@@ -139,6 +140,18 @@ class UiDialog:
                 row_count, column, QtWidgets.QTableWidgetItem(str(data))
             )
 
+    def _remove_deck_from_table(self):
+        if not self.table_widget.selectionModel().hasSelection():
+            return
+        selected_items = self.table_widget.selectedItems()
+        if isinstance(selected_items, list):
+            selected_rows = set(item.row() for item in selected_items)
+        else:
+            selected_rows = set(selected_items.row())
+        for row in reversed(sorted(selected_rows)):
+            self.table_widget.removeRow(row)
+        return
+
     def _add_dummy_data(self):
         for row, deck in enumerate(DEFAULT_DUMMY_DECKS):
             number_of_rows = self.table_widget.rowCount()
@@ -147,7 +160,7 @@ class UiDialog:
                 self.table_widget.setItem(
                     row, column, QtWidgets.QTableWidgetItem(str(data))
                 )
-
+        # self.table_widget.selectRow(0)
         self.table_widget.resizeColumnsToContents()
 
 
