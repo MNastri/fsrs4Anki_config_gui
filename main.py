@@ -14,7 +14,7 @@ my_config_file = "config.toml"
 def generate_deck_params_code_from(file) -> str:
     """
     Creates the deckParams part of the FSRS4Anki custom scheduler code from
-    the given toml fil.e
+    the given toml file.
     :param file: The toml file
     :return: the string to be pasted inside the custom scheduler
     """
