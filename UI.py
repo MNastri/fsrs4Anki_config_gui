@@ -66,6 +66,10 @@ DEFAULT_DUMMY_DECKS = (
 )
 
 
+def generate_code_from(data):
+    ...
+
+
 class UiDialog:
     def setup_ui(self, dialog):
         dialog.setObjectName("dialog")
@@ -80,7 +84,8 @@ class UiDialog:
 
     def _setup_buttons(self, dialog):
         self.convert_to_text_button = QtWidgets.QPushButton("Convert to text", dialog)
-        self.convert_to_text_button.setEnabled(False)  # todo
+        self.convert_to_text_button.setEnabled(True)
+        self.convert_to_text_button.clicked.connect(self._convert_to_text_button)
         self.convert_to_table_button = QtWidgets.QPushButton("Convert to table", dialog)
         self.convert_to_table_button.setEnabled(False)  # todo
         self.add_deck_to_table_button = QtWidgets.QPushButton(
@@ -150,6 +155,24 @@ class UiDialog:
         for row in reversed(sorted(selected_rows)):
             self.table_widget.removeRow(row)
         return
+
+    def _get_data_from_table(self):
+        row_count = self.table_widget.rowCount()
+        column_count = len(COLUMN_NAMES)
+        data = []
+        for row in range(row_count):
+            data += (
+                [
+                    self.table_widget.item(row, column).text()
+                    for column in range(column_count)
+                ],
+            )
+        return data
+
+    def _convert_to_text_button(self):
+        data = self._get_data_from_table()
+        text = generate_code_from(data)
+        self.text_widget.setText(text)
 
     def _add_dummy_data(self):
         for row, deck in enumerate(DEFAULT_DUMMY_DECKS):
