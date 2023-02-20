@@ -104,6 +104,7 @@ class UiDialog:
         self.import_from_config_button.setEnabled(False)  # todo
         self.export_to_config_button = QtWidgets.QPushButton("Export to config", dialog)
         self.export_to_config_button.setEnabled(False)  # todo
+        # TODO copy to clipboard button
 
     def _setup_table(self, dialog):
         self.table_widget = QtWidgets.QTableWidget(dialog)
