@@ -9,6 +9,7 @@ TEXTW_POS = (10, 220)
 TEXTW_SIZE = (UI_SIZE[0] - TEXTW_POS[0] - 10, 200)
 LAYOUT_POS = (10, 10)
 LAYOUT_SIZE = (150, 10 + (23 + 10) * 5)
+COLUMN_NAMES = ("name", "weights", "retention", "interval", "easy", "hard")
 DEFAULT_DUMMY_DECKS = (
     (
         "global config for FSRS4Anki",
@@ -103,9 +104,7 @@ class UiDialog:
         self.table_widget = QtWidgets.QTableWidget(dialog)
         self.table_widget.setGeometry(QtCore.QRect(*TABLE_POS, *TABLE_SIZE))
         self.table_widget.setColumnCount(6)
-        self.table_widget.setHorizontalHeaderLabels(
-            ["name", "weights", "retention", "interval", "easy", "hard"]
-        )
+        self.table_widget.setHorizontalHeaderLabels(COLUMN_NAMES)
         self.table_widget.setSizeAdjustPolicy(
             QtWidgets.QAbstractScrollArea.AdjustToContents
         )
