@@ -4,11 +4,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from main import KEYS_OF_DECKPARAMS
 
-UI_SIZE = (1350, 430)
+# todo can I check what is the size of the screen instead of using this code?
+UI_SIZE = (1350, 930)
 TABLE_POS = (170, 10)
 TABLE_SIZE = (UI_SIZE[0] - TABLE_POS[0] - 10, 200)
 TEXTW_POS = (10, 220)
-TEXTW_SIZE = (UI_SIZE[0] - TEXTW_POS[0] - 10, 200)
+TEXTW_SIZE = (UI_SIZE[0] - TEXTW_POS[0] - 10, UI_SIZE[1] - TABLE_SIZE[1] - 30)
 LAYOUT_POS = (10, 10)
 LAYOUT_SIZE = (150, 10 + (23 + 10) * 5)
 COLUMN_NAMES = ("name", "weights", "retention", "interval", "easy", "hard")
@@ -120,7 +121,8 @@ def generate_code_from(data):
 class UiDialog:
     def setup_ui(self, dialog):
         dialog.setObjectName("dialog")
-        dialog.resize(*UI_SIZE)
+        # dialog.resize(*UI_SIZE) # todo resizing the window as well as the widgets
+        dialog.setFixedSize(*UI_SIZE)
         dialog.setWindowTitle("Code string generator")
         self._setup_buttons(dialog)
         self._setup_table(dialog)
