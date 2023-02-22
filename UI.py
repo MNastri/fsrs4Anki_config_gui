@@ -92,7 +92,6 @@ def _get_deck_data_from(table):
         deck = deck_data[dd] = {}
         for key, param in zip(KEYS_OF_DECKPARAMS[1:], params):
             deck[key] = param
-    print("hello")
     return deck_data
 
 
