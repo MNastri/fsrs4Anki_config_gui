@@ -2,6 +2,8 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import get_custom_scheduler_code
+
 from main import KEYS_OF_DECKPARAMS
 
 # todo can I check what is the size of the screen instead of using this code?
@@ -69,6 +71,10 @@ DEFAULT_DUMMY_DECKS = (
 )
 
 
+def get_custom_scheduler_code_without_decks():
+    return get_custom_scheduler_code.header, get_custom_scheduler_code.scheduler
+
+
 def _get_weights_from(ss: str) -> list:
     for rr in (("(", ""), (")", "")):
         ss = ss.replace(*rr)
@@ -90,7 +96,9 @@ def _get_deck_data_from(table):
     return deck_data
 
 
-def generate_code_from(data):
+def generate_deck_params_code_from(data):
+    # todo check if output matches js code!!
+    # todo is this code the same as the one in main??
     """
     Creates the deckParams part of the FSRS4Anki custom scheduler code from
     the given data.
@@ -116,6 +124,12 @@ def generate_code_from(data):
         decks_parameters.insert(-1, deck)
     decks_parameters = "".join(decks_parameters)
     return decks_parameters
+
+
+def generate_custom_scheduler_code_from(data):
+    header, scheduler = get_custom_scheduler_code_without_decks()
+    decks = generate_deck_params_code_from(data)
+    return header + decks + scheduler
 
 
 class UiDialog:
@@ -172,6 +186,9 @@ class UiDialog:
             dialog,
         )
         self.text_widget.setGeometry(QtCore.QRect(*TEXTW_POS, *TEXTW_SIZE))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.text_widget.setFont(font)
 
     def _setup_layout(self, dialog):
         self.vertical_layout_widget = QtWidgets.QWidget(dialog)
@@ -221,7 +238,7 @@ class UiDialog:
 
     def _convert_to_text(self):
         data = self._get_data_from_table()
-        text = generate_code_from(data)
+        text = generate_custom_scheduler_code_from(data)
         self.text_widget.setText(text)
 
     def _add_dummy_data(self):
