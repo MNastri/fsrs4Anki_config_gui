@@ -2,6 +2,8 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from main import KEYS_OF_DECKPARAMS
+
 UI_SIZE = (1350, 430)
 TABLE_POS = (170, 10)
 TABLE_SIZE = (UI_SIZE[0] - TABLE_POS[0] - 10, 200)
@@ -66,8 +68,53 @@ DEFAULT_DUMMY_DECKS = (
 )
 
 
+def _get_weights_from(ss: str) -> list:
+    for rr in (("(", ""), (")", "")):
+        ss = ss.replace(*rr)
+    weights = ss.split(", ")
+    weights = list(map(float, weights))
+    return weights
+
+
+def _get_deck_data_from(table):
+    deck_data = {}
+    for row in table:
+        dd, ww, rr, ii, ee, hh = row
+        ww = _get_weights_from(ww)
+        params = ww, rr, ii, ee, hh
+        deck = deck_data[dd] = {}
+        for key, param in zip(KEYS_OF_DECKPARAMS[1:], params):
+            deck[key] = param
+    print("hello")
+    return deck_data
+
+
 def generate_code_from(data):
-    ...
+    """
+    Creates the deckParams part of the FSRS4Anki custom scheduler code from
+    the given data.
+    :param data: The data from the table
+    :return: the string to be pasted inside the custom scheduler
+    """
+
+    deck_data = _get_deck_data_from(data)
+    decks_parameters = ["const deckParams = [\n", "];\n"]
+    for deck_name, deck_params in deck_data.items():
+        deck = [
+            "  {\n",
+            f'    "{KEYS_OF_DECKPARAMS[0]}": "{deck_name}",\n',
+            "  },\n",
+        ]
+        for key_of_deck_params, deck_parameter in zip(
+            KEYS_OF_DECKPARAMS[1:], deck_params.values()
+        ):
+            # insert before the last item in list
+            deck.insert(-1, f'    "{key_of_deck_params}": {deck_parameter},\n')
+        deck = "".join(deck)
+        # insert before the last item in list
+        decks_parameters.insert(-1, deck)
+    decks_parameters = "".join(decks_parameters)
+    return decks_parameters
 
 
 class UiDialog:
@@ -85,7 +132,7 @@ class UiDialog:
     def _setup_buttons(self, dialog):
         self.convert_to_text_button = QtWidgets.QPushButton("Convert to text", dialog)
         self.convert_to_text_button.setEnabled(True)
-        self.convert_to_text_button.clicked.connect(self._convert_to_text_button)
+        self.convert_to_text_button.clicked.connect(self._convert_to_text)
         self.convert_to_table_button = QtWidgets.QPushButton("Convert to table", dialog)
         self.convert_to_table_button.setEnabled(False)  # todo
         self.add_deck_to_table_button = QtWidgets.QPushButton(
@@ -170,7 +217,7 @@ class UiDialog:
             )
         return data
 
-    def _convert_to_text_button(self):
+    def _convert_to_text(self):
         data = self._get_data_from_table()
         text = generate_code_from(data)
         self.text_widget.setText(text)
