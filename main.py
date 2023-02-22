@@ -12,6 +12,8 @@ my_config_file = "config.toml"
 
 
 def generate_deck_params_code_from(file) -> str:
+    # todo w, r, m, e, and h are being passed as strings instead of numbers
+    # todo this code is the same as the one in UI
     """
     Creates the deckParams part of the FSRS4Anki custom scheduler code from
     the given toml file.

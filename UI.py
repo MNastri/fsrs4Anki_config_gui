@@ -132,6 +132,9 @@ def generate_custom_scheduler_code_from(data):
 
 
 class UiDialog:
+    # todo add default decks in table button
+    # todo add clear text edit box button
+    # todo add copy text from edit box to clipboard button
     def setup_ui(self, dialog):
         dialog.setObjectName("dialog")
         # dialog.resize(*UI_SIZE) # todo resizing the window as well as the widgets
