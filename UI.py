@@ -214,6 +214,7 @@ class UiDialog:
             )
 
     def _remove_deck_from_table(self):
+        # todo disable deleting the 'global config for fsrs4anki' deck
         if not self.table_widget.selectionModel().hasSelection():
             return
         selected_items = self.table_widget.selectedItems()
